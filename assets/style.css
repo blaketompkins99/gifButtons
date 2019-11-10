@@ -1,0 +1,47 @@
+body {
+    background-color: lightblue;
+    font-family: unset;
+    font-size: 20px;
+}
+
+#buttons {
+    width: 1264px;
+    height: 150px;
+    margin: auto auto 10px auto;
+}
+
+#animalForm {
+    width: 350px;
+    height: 500px;
+    float: right;
+}
+
+#images {
+    width: 900px;
+    height: 900px;
+}
+
+button {
+    font-size: 15px;
+    font-family: unset;
+    background-color: cyan;
+    border: solid 2px darkcyan;
+    height: 25px;
+    width: auto;
+    margin: 3px;
+}
+
+#animalInput {
+    width: 250px;
+    height: 15px;
+    float: left;
+}
+
+#findAnimal {
+    width: 100px;
+    height: 30px;
+    margin: 5px auto auto auto;
+    float: left;
+    clear: both;
+}
+
