@@ -1,36 +1,57 @@
-var gifButtons = ["Shark", "Turtle", "Eel", "Clown Fish", "Stingray", "Octopus",
-    "Crab", "Lobster", "Orca", "Seahorse"];
+$("#findAnimal").on("click", function (event) {
+    event.preventDefault();
+    var animal = $("#animalInput").val();
+    // $("#buttons").append("<button>" + animal);
+    var newAnimal = $("<button>" + animal);
+    newAnimal.attr("data-animal", animal);
+    $("#buttons").append(newAnimal);
+});
 
+$("button").on("click", function () {
 
-for (i = 0; i < 10; i++) {
-    $("#buttons").append("<button class='animals'>" + gifButtons[i]);
-}
+    $("#images").empty();
 
+    var animalData = $(this).attr("data-animal");
 
-$(".animals").on("click", function() {
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+        animalData + "&api_key=H5vfvCtH5aqSgcmie5YyMhWlc0NgvAYe&limit=10";
 
-    console.log("pianooo!");
-
-    var queryURL = "https://api.giphy.com/v1/gifs/trending?api_key=BkaUZZWcFij6J7AoQj3WtPb1R2p9O6V9";
     $.ajax({
         url: queryURL,
         method: "GET"
     }).then(function (response) {
-        var imagesUrl = response.data.image_original_url;
-        var catImage = $("<img>");
-        catImage.attr("src", imageUrl);
-        catImage.attr("alt", "cat image");
-        $("#images").prepend(catImage);
-        })
+        var results = response.data;
+
+        // Looping over every result item
+        for (var i = 0; i < results.length; i++) {
+
+            // Only taking action if the photo has an appropriate rating
+            if (results[i].rating !== "r" && results[i].rating !== "pg-13") {
+                // Creating a div for the gif
+                var gifDiv = $("<div>");
+
+                // Storing the result item's rating
+                var rating = results[i].rating;
+
+                // Creating a paragraph tag with the result item's rating
+                var p = $("<p>").text("Rating: " + rating);
+
+                // Creating an image tag
+                var animalImage = $("<img>");
+
+                // Giving the image tag an src attribute of a proprty pulled off the
+                // result item
+                animalImage.attr("src", results[i].images.fixed_height.url);
+
+                // Appending the paragraph and personImage we created to the "gifDiv" div we created
+                gifDiv.append(p);
+                gifDiv.append(animalImage);
+
+                // Prepending the gifDiv to the "#gifs-appear-here" div in the HTML
+                $("#images").prepend(gifDiv);
+            }
+        }
+    })
 });
 
-
-
-
-$("#findAnimal").on("click", function (event) {
-    event.preventDefault();
-    var animal = $("#animalInput").val();
-    gifButtons.push(animal);
-    $("#buttons").append("<button class='animals'>" + animal);
-});
 
