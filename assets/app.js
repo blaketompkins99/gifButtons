@@ -1,13 +1,30 @@
+var animals = ["Shark", "Sea Turtle", "Eel", "Blue Whale", "Stingray",
+    "Octopus", "Crab", "Lobster", "Orca", "Seahorse"];
+
+function loadButtons() {
+    $("#buttons").empty();
+    for (i = 0; i < animals.length; i++) {
+        var a = $("<button>");
+        a.addClass("animal");
+        a.attr("data-animal", animals[i]);
+        a.text(animals[i]);
+        $("#buttons").append(a);
+    }
+}
+
+loadButtons();
+
 $("#findAnimal").on("click", function (event) {
     event.preventDefault();
-    var animal = $("#animalInput").val();
-    // $("#buttons").append("<button>" + animal);
-    var newAnimal = $("<button>" + animal);
-    newAnimal.attr("data-animal", animal);
-    $("#buttons").append(newAnimal);
+    var a = $("#animalInput").val().trim();
+    animals.push(a);
+    console.log(animals);
+    loadButtons();
 });
 
-$("button").on("click", function () {
+// $("button").on("click", function () {
+
+function displayGIFS()  {
 
     $("#images").empty();
 
@@ -22,36 +39,26 @@ $("button").on("click", function () {
     }).then(function (response) {
         var results = response.data;
 
-        // Looping over every result item
         for (var i = 0; i < results.length; i++) {
 
-            // Only taking action if the photo has an appropriate rating
             if (results[i].rating !== "r" && results[i].rating !== "pg-13") {
-                // Creating a div for the gif
                 var gifDiv = $("<div>");
 
-                // Storing the result item's rating
                 var rating = results[i].rating;
 
-                // Creating a paragraph tag with the result item's rating
                 var p = $("<p>").text("Rating: " + rating);
 
-                // Creating an image tag
                 var animalImage = $("<img>");
 
-                // Giving the image tag an src attribute of a proprty pulled off the
-                // result item
                 animalImage.attr("src", results[i].images.fixed_height.url);
 
-                // Appending the paragraph and personImage we created to the "gifDiv" div we created
                 gifDiv.append(p);
                 gifDiv.append(animalImage);
 
-                // Prepending the gifDiv to the "#gifs-appear-here" div in the HTML
                 $("#images").prepend(gifDiv);
             }
         }
     })
-});
+}
 
-
+$(document).on("click", ".animal", displayGIFS);
